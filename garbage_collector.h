@@ -6,7 +6,7 @@
 /*   By: iziane <iziane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 22:34:21 by iziane            #+#    #+#             */
-/*   Updated: 2024/10/17 23:50:38 by iziane           ###   ########.fr       */
+/*   Updated: 2024/10/18 20:21:38 by iziane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <stdint.h>
+# include <strings.h>
 
 //BEGIN: Structs
 typedef struct s_gc_node
@@ -42,6 +43,8 @@ void				gc_free_all(void);
 t_garbage_collector	*get_gc(void);
 // void				*ft_malloc(size_t size);
 void				*ft_malloc(size_t len);
+void				main_cleanup(uint8_t exit_stat);
+void				ft_error(char *msg, char *file, int line, uint8_t exit_stat);
 //END: FNC-Prototyps
 
 #endif

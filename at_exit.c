@@ -1,42 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gb_utils.c                                         :+:      :+:    :+:   */
+/*   at_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iziane <iziane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/17 23:49:19 by iziane            #+#    #+#             */
-/*   Updated: 2024/10/17 23:49:21 by iziane           ###   ########.fr       */
+/*   Created: 2024/10/17 23:44:11 by iziane            #+#    #+#             */
+/*   Updated: 2024/10/18 20:21:27 by iziane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <garbage_collector.h>
+#include "garbage_collector.h"
 
-// TODO: gc_overwrite();
-
-t_garbage_collector	*get_gc(void)
+void	main_cleanup(uint8_t exit_stat)
 {
-	static t_garbage_collector	gc = {0};
-
-	return (&gc);
+	gc_free_all();
+	bzero(get_gc(), sizeof(t_garbage_collector));
+	exit(exit_stat);
 }
 
-void	gc_print_linked_list(t_garbage_collector *gc)
+void	ft_error(char *msg, char *file, int line, uint8_t exit_stat)
 {
-	if (!gc)
-		return ;
-	printf("Len of Linked List: %zu\n", gc->size);
-	return ;
-}
-
-//TODO:
-void	*ft_malloc(size_t len)
-{
-	void	*ptr;
-
-	ptr = malloc(len);
-	if (!ptr)
-		return (NULL);
-	gc_add_begin(ptr);
-	return (ptr);
+	fprintf(stderr, "Error: File %s line %d: %s\n", file, line, msg);
+	main_cleanup(exit_stat);
 }

@@ -6,12 +6,11 @@
 /*   By: iziane <iziane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 23:49:05 by iziane            #+#    #+#             */
-/*   Updated: 2024/10/17 23:49:08 by iziane           ###   ########.fr       */
+/*   Updated: 2024/10/18 20:17:03 by iziane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <garbage_collector.h>
-#include <main.h>
+#include "garbage_collector.h"
 
 void	gc_free_all(void)
 {

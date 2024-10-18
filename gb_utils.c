@@ -1,22 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   at_exit.c                                          :+:      :+:    :+:   */
+/*   gb_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iziane <iziane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/17 23:44:11 by iziane            #+#    #+#             */
-/*   Updated: 2024/10/17 23:46:35 by iziane           ###   ########.fr       */
+/*   Created: 2024/10/17 23:49:19 by iziane            #+#    #+#             */
+/*   Updated: 2024/10/18 20:30:55 by iziane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <includes/garbage_collector/garbage_collector.h>
+#include "garbage_collector.h"
 
-noreturn void	main_cleanup(uint8_t exit_stat)
+t_garbage_collector	*get_gc(void)
 {
-	gc_free_all();
-	ft_bzero(get_gc(), sizeof(t_garbage_collector));
-	exit(exit_stat);
+	static t_garbage_collector	gc = {0};
+
+	return (&gc);
 }
 
+void	gc_print_linked_list(t_garbage_collector *gc)
+{
+	if (!gc)
+		return ;
+	printf("Len of Linked List: %zu\n", gc->size);
+	return ;
+}
 
+void	*ft_malloc(size_t len)
+{
+	void	*ptr;
+
+	ptr = malloc(len);
+	if (!ptr)
+		return (NULL);
+	gc_add_begin(ptr);
+	return (ptr);
+}

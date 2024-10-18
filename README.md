@@ -77,20 +77,20 @@ This project provides a simple garbage collection system in C using a linked lis
 
 int main(void)
 {
-	// Initialize the garbage collector
-	gc_init_garbage_collector();
+   // Initialize the garbage collector
+   gc_init_garbage_collector();
 
-	// Allocate memory using ft_malloc
-	int *arr = (int *)ft_malloc(sizeof(int) * 5);
-	if (!arr)
-		return 1;
+   // Allocate memory using ft_malloc
+   int *arr = (int *)ft_malloc(sizeof(int) * 5);
+   if (!arr)
+       return 1;
 
-	// Use the allocated memory
-	arr[0] = 42;
-	printf("First element: %d\n", arr[0]);
-	// Clean up and exit
-	main_cleanup(1);
-	return 0;
+// Use the allocated memory
+   arr[0] = 42;
+   printf("First element: %d\n", arr[0]);
+   // Clean up and exit
+   main_cleanup(1);
+   return 0;
 }
 ```
 
@@ -110,11 +110,14 @@ noreturn void main_cleanup(void) {
 }
 ```
 
+## Leak-Check using Valgrind (valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./a.out)
+![valgrind.png]
+
 ## Compilation
 To compile your program, include the necessary headers (`garbage_collector.h`, `main.h`, `libft.h`) and link the required libraries:
 
 ```bash
-cc -Wall -Werror -Wextra -g my_program gb_garbage_collector.c gb_utils.c
+cc -Wall -Werror -Wextra -g cc -Wall -Werror -Wextra main.c at_exit.c gb_garbage_collector.c gb_utils.c
 ```
 
 ## Future Work
