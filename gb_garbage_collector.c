@@ -6,7 +6,7 @@
 /*   By: iziane <iziane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 23:49:05 by iziane            #+#    #+#             */
-/*   Updated: 2024/10/18 20:17:03 by iziane           ###   ########.fr       */
+/*   Updated: 2024/10/19 01:12:21 by iziane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,3 +85,17 @@ t_garbage_collector	*gc_init_garbage_collector(void)
 	gc->size = 0;
 	return (gc);
 }
+
+// int	main(void)
+// {
+// 	int	*arr;
+
+// 	gc_init_garbage_collector();
+// 	arr = (int *)ft_malloc(sizeof(int) * 10);
+// 	if (!arr)
+// 		return (1);
+// 	arr[0] = 42;
+// 	printf("First element: %d\n", arr[0]);
+// 	main_cleanup(0);
+// 	return (0);
+// }
