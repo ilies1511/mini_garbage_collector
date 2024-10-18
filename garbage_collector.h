@@ -6,7 +6,7 @@
 /*   By: iziane <iziane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 22:34:21 by iziane            #+#    #+#             */
-/*   Updated: 2024/10/18 20:21:38 by iziane           ###   ########.fr       */
+/*   Updated: 2024/10/18 23:41:37 by iziane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void				gc_print_linked_list(t_garbage_collector *gc);
 void				gc_free_all(void);
 t_garbage_collector	*get_gc(void);
 // void				*ft_malloc(size_t size);
-void				*ft_malloc(size_t len);
+void				*ft_malloc(size_t size);
 void				main_cleanup(uint8_t exit_stat);
 void				ft_error(char *msg, char *file, int line, uint8_t exit_stat);
 //END: FNC-Prototyps
