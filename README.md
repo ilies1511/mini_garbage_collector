@@ -110,8 +110,8 @@ noreturn void main_cleanup(void) {
 }
 ```
 
-## Leak-Check using Valgrind (valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./a.out)
-![valgrind.png]
+## Leak-Check using Valgrind
+![Valgrind using: valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./a.out](valgrind.png)
 
 ## Compilation
 To compile your program, include the necessary headers (`garbage_collector.h`, `main.h`, `libft.h`) and link the required libraries:
