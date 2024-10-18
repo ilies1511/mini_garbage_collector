@@ -19,7 +19,7 @@ This project provides a simple garbage collection system in C using a linked lis
 
 ## Files
 - **gb_garbage_collector.c**: Implements the core garbage collection system, including adding memory blocks to the collection list, creating nodes, and freeing all memory.
-- **gb_utils.c**: Provides utility functions for memory allocation, linked list operations, and printing the state of the garbage collector.
+- **gb_utils.c**: Provides utility functions for memory allocation and linked list operations.
 - **main_cleanup**: A cleanup function that frees all memory, resets the garbage collector, and terminates the program.
 
 ## Usage
@@ -89,7 +89,7 @@ int main(void)
    arr[0] = 42;
    printf("First element: %d\n", arr[0]);
    // Clean up and exit
-   main_cleanup(1);
+   main_cleanup(0);
    return 0;
 }
 ```
@@ -97,13 +97,13 @@ int main(void)
 ### Cleanup Function
 The `main_cleanup()` function does the following:
 
-- Gets the linked list through the static struct that we initilized at the very beginning --> gets us acces to the data from everywhere in the Code
 - Calls `gc_free_all()` to free all allocated memory.
 - Clears the garbage collector's internal state with `ft_bzero()`.
 - Terminates the program with `exit()`.
 
 ```c
-noreturn void main_cleanup(void) {
+void main_cleanup(uint8_t exit_stat)
+{
     gc_free_all();
     ft_bzero(get_gc(), sizeof(t_garbage_collector));
     exit(exit_stat);  // Exits the program with the appropriate exit status
@@ -111,14 +111,14 @@ noreturn void main_cleanup(void) {
 ```
 
 ## Leak-Check using Valgrind
-## valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./a.out
+## command: valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./a.out
 ![Valgrind](valgrind.png)
 
 ## Compilation
 To compile your program, include the necessary headers (`garbage_collector.h`, `main.h`, `libft.h`) and link the required libraries:
 
 ```bash
-cc -Wall -Werror -Wextra -g cc -Wall -Werror -Wextra main.c at_exit.c gb_garbage_collector.c gb_utils.c
+cc -Wall -Werror -Wextra -g main.c at_exit.c gb_garbage_collector.c gb_utils.c
 ```
 
 ## Future Work
