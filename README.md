@@ -77,35 +77,27 @@ This project provides a simple garbage collection system in C using a linked lis
 
 int main(void)
 {
-    // Initialize the garbage collector
-    gc_init_garbage_collector();
+	// Initialize the garbage collector
+	gc_init_garbage_collector();
 
-    // Allocate memory using ft_malloc
-    int *arr = (int *)ft_malloc(sizeof(int) * 5);
-    if (!arr)
-        return 1;
+	// Allocate memory using ft_malloc
+	int *arr = (int *)ft_malloc(sizeof(int) * 5);
+	if (!arr)
+		return 1;
 
-    // Use the allocated memory
-    arr[0] = 42;
-    printf("First element: %d\n", arr[0]);
-
-    // Clean up and exit
-    main_cleanup();
-
-    return 0;
+	// Use the allocated memory
+	arr[0] = 42;
+	printf("First element: %d\n", arr[0]);
+	// Clean up and exit
+	main_cleanup(1);
+	return 0;
 }
-```
-
-### Linked List Debugging
-You can print the size of the garbage collector's linked list at any time to inspect how many memory blocks are being tracked:
-
-```c
-gc_print_linked_list(get_gc());
 ```
 
 ### Cleanup Function
 The `main_cleanup()` function does the following:
 
+- Gets the linked list through the static struct that we initilized at the very beginning --> gets us acces to the data from everywhere in the Code
 - Calls `gc_free_all()` to free all allocated memory.
 - Clears the garbage collector's internal state with `ft_bzero()`.
 - Terminates the program with `exit()`.
@@ -126,7 +118,6 @@ cc -Wall -Werror -Wextra -g my_program gb_garbage_collector.c gb_utils.c
 ```
 
 ## Future Work
-- Implement `gc_overwrite()`: A function to safely overwrite memory while being tracked by the garbage collector.
 - Extend error handling for memory operations.
 
 ## License
