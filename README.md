@@ -5,11 +5,11 @@ A lightweight, **highly portable** garbage collection system in C that efficient
 ## Why This Garbage Collector?
 
 - **Effortless Integration**: Just initialize **once**, and replace `malloc` with `ft_malloc` wherever garbage collection is needed.
-- **No Need to Pass References**: Unlike traditional memory managers, **you don't have to pass the garbage collector around**. A static variable holds the reference of the linked-list upon initialization, making it accessible globally.
+- **No Need to Pass References**: Unlike traditional memory managers, **you don't have to pass the garbage collector around**. A static variable holds the reference upon initialization, making it accessible globally.
 - **Automatic Memory Tracking**: Memory blocks are registered upon allocation, ensuring nothing is lost.
 - **Lightweight & Efficient**: No complex dependencies—just a straightforward and effective memory management tool.
 - **Seamless Expansion**: Memory blocks are dynamically added to the collector’s linked list through `ft_malloc()`, which calls `gc_add_begin(ptr)` under the hood.
-- **Unobtrusive**: If garbage collection isn't needed, simply use `malloc()` as usual. The garbage collector **only** affects the parts of the code where you opt-in by using `ft_malloc()`.
+- **Unobtrusive**: If garbage collection isn't needed, simply use `malloc()` as usual. The garbage collector **only** affects the parts of the code where you opt in by using `ft_malloc()`.
 
 ---
 
@@ -144,12 +144,13 @@ Ensure the necessary headers (`garbage_collector.h`, `libft.h`) are included.
 
 ## Why Choose This Over Manual Memory Management?
 
-Managing memory manually in C is **error-prone**. Forgetting even a **single `free()`** call can result in memory leaks, leading to bloated programs and undefined behavior.
+Managing memory manually in C is **error-prone**. Forgetting even a \*\*single \*\***`free()`** call can result in memory leaks, leading to bloated programs and undefined behavior.
 
 With this garbage collector:
+
 - **Initialize once, and forget about tracking pointers manually.**
 - **No tedious passing of memory management references.**
-- **Seamless drop-in replacement for `malloc()`.**
+- **Seamless drop-in replacement for ********`malloc()`********.**
 - **Eliminate memory leaks with a single cleanup function.**
 
 ---
@@ -158,6 +159,12 @@ With this garbage collector:
 
 - Enhance error handling mechanisms.
 - Optimize memory allocation efficiency.
+- **Category-Based Memory Management** *(Planned Feature)*:
+  - A future version may introduce a **free\_group()** function to selectively free specific memory allocations based on categories.
+  - `ft_malloc()` will take an additional string parameter to categorize allocated memory.
+  - `free_group(char *category)` will loop through the linked list and compare node categories using `strncmp()`, freeing only matching nodes.
+  - If `ft_malloc()` is used without a category, it will default to `NULL`.
+  - This feature allows precise control over memory cleanup without affecting unrelated allocations.
 
 ---
 
