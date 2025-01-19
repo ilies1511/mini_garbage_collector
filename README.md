@@ -127,7 +127,7 @@ Run Valgrind to verify perfect memory management:
 ```bash
 valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./a.out
 ```
-
+![Valgrind](valgrind.png)
 ---
 
 ## Compilation Instructions
