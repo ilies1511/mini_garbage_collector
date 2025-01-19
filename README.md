@@ -1,75 +1,77 @@
+# Mini Garbage Collector
 
-# Garbage Collector - README
+A lightweight, **highly portable** garbage collection system in C that efficiently manages dynamically allocated memory, preventing memory leaks using a singly linked list.
 
-## Overview
-This project provides a simple garbage collection system in C using a linked list to manage dynamically allocated memory. The system ensures that all allocated memory is tracked and freed, preventing memory leaks. Additionally, a cleanup function (`main_cleanup`) is provided to free all memory and reset the garbage collector when the program terminates.
+## Why This Garbage Collector?
 
-## Features
-- **Linked List-Based Garbage Collection:**
-  Memory blocks are tracked in a linked list, enabling efficient memory management.
+- **Effortless Integration**: Just initialize **once**, and replace `malloc` with `ft_malloc` wherever garbage collection is needed.
+- **No Need to Pass References**: Unlike traditional memory managers, **you don't have to pass the garbage collector around**. A static variable holds the reference of the linked-list upon initialization, making it accessible globally.
+- **Automatic Memory Tracking**: Memory blocks are registered upon allocation, ensuring nothing is lost.
+- **Lightweight & Efficient**: No complex dependencies—just a straightforward and effective memory management tool.
+- **Seamless Expansion**: Memory blocks are dynamically added to the collector’s linked list through `ft_malloc()`, which calls `gc_add_begin(ptr)` under the hood.
+- **Unobtrusive**: If garbage collection isn't needed, simply use `malloc()` as usual. The garbage collector **only** affects the parts of the code where you opt-in by using `ft_malloc()`.
 
-- **Automatic Memory Management:**
-  Custom memory allocation function (`ft_malloc`) automatically registers memory blocks with the garbage collector.
+---
 
-- **Batch Memory Deallocation:**
-  All memory blocks tracked by the garbage collector are freed at once using `gc_free_all()`.
+## How It Works
 
-- **Program Cleanup:**
-  The `main_cleanup()` function frees all allocated memory, resets the garbage collector, and exits the program.
+### 1. Initializing the Garbage Collector
 
-## Files
-- **gb_garbage_collector.c**: Implements the core garbage collection system, including adding memory blocks to the collection list, creating nodes, and freeing all memory.
-- **gb_utils.c**: Provides utility functions for memory allocation and linked list operations.
-- **main_cleanup**: A cleanup function that frees all memory, resets the garbage collector, and terminates the program.
+Initialize **once** at the start of your program, and you're set for the rest of its execution:
 
-## Usage
+```c
+#include "garbage_collector.h"
 
-### Garbage Collector Operations
+t_garbage_collector *gc_init_garbage_collector(void);
+```
 
-1. **Initialize Garbage Collector**
-   Sets up an empty garbage collector to track dynamically allocated memory.
+### 2. Allocating Memory with Zero Hassle
 
-   ```c
-   t_garbage_collector *gc_init_garbage_collector(void);
-   ```
+Forget about passing memory references between functions! With `ft_malloc()`, memory is automatically tracked:
 
-2. **Allocate Memory with Garbage Collector**
-   Allocates memory and registers the allocated block with the garbage collector, so it can be freed later.
+```c
+void *ft_malloc(size_t len);
+```
 
-   ```c
-   void *ft_malloc(size_t len);
-   ```
+Example:
 
-   Example:
-   ```c
-   int *arr = (int *)ft_malloc(sizeof(int) * 10); // Allocates memory for 10 integers
-   ```
+```c
+int *arr = (int *)ft_malloc(sizeof(int) * 10); // Allocates memory for 10 integers
+```
 
-3. **Free All Allocated Memory**
-   Frees all memory blocks tracked by the garbage collector and clears the linked list.
+### 3. Freeing All Allocated Memory Instantly
 
-   ```c
-   void gc_free_all(void);
-   ```
+When the program no longer needs allocated memory, **free everything in one command**:
 
-   Example:
-   ```c
-   gc_free_all();  // Frees all allocated memory
-   ```
+```c
+void gc_free_all(void);
+```
 
-4. **Program Cleanup and Exit**
-   The `main_cleanup()` function handles freeing all memory, clearing the garbage collector, and exiting the program.
+Example:
 
-   ```c
-   noreturn void main_cleanup(void);
-   ```
+```c
+gc_free_all(); // Releases all allocated memory at once
+```
 
-   Example:
-   ```c
-   main_cleanup();  // Cleans up and exits the program
-   ```
+### 4. The Ultimate Cleanup Before Exiting
 
-### Example Program
+To ensure no memory leaks remain, call `main_cleanup()` before program termination:
+
+```c
+noreturn void main_cleanup(void);
+```
+
+Example:
+
+```c
+main_cleanup(); // Cleans up everything before exiting
+```
+
+---
+
+## Example Program
+
+Here's how easily the garbage collector integrates into a C program:
 
 ```c
 #include "garbage_collector.h"
@@ -77,52 +79,89 @@ This project provides a simple garbage collection system in C using a linked lis
 
 int main(void)
 {
-   // Initialize the garbage collector
-   gc_init_garbage_collector();
+    gc_init_garbage_collector();
 
-   // Allocate memory using ft_malloc
-   int *arr = (int *)ft_malloc(sizeof(int) * 5);
-   if (!arr)
-       return 1;
+    int *arr = (int *)ft_malloc(sizeof(int) * 5);
+    if (!arr)
+        return 1;
 
-// Use the allocated memory
-   arr[0] = 42;
-   printf("First element: %d\n", arr[0]);
-   // Clean up and exit
-   main_cleanup(0);
-   return 0;
+    arr[0] = 42;
+    printf("First element: %d\n", arr[0]);
+
+    main_cleanup();
+    return 0;
 }
 ```
 
-### Cleanup Function
-The `main_cleanup()` function does the following:
+---
 
-- Calls `gc_free_all()` to free all allocated memory.
-- Clears the garbage collector's internal state with `ft_bzero()`.
-- Terminates the program with `exit()`.
+## Core Functions
+
+### `gc_free_all()`
+
+Frees **all** memory allocated through `ft_malloc()` and resets the garbage collector.
+
+```c
+void gc_free_all(void);
+```
+
+### `main_cleanup()`
+
+Ensures a **graceful** program termination by clearing memory and resetting the garbage collector:
 
 ```c
 void main_cleanup(uint8_t exit_stat)
 {
     gc_free_all();
     ft_bzero(get_gc(), sizeof(t_garbage_collector));
-    exit(exit_stat);  // Exits the program with the appropriate exit status
+    exit(exit_stat);
 }
 ```
 
-## Leak-Check using Valgrind
-## command: valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./a.out
-![Valgrind](valgrind.png)
+---
 
-## Compilation
-To compile your program, include the necessary headers (`garbage_collector.h`, `main.h`, `libft.h`) and link the required libraries:
+## Debugging & Memory Leak Detection
+
+Run Valgrind to verify perfect memory management:
+
+```bash
+valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./a.out
+```
+
+---
+
+## Compilation Instructions
+
+Compile the project with:
 
 ```bash
 cc -Wall -Werror -Wextra -g main.c at_exit.c gb_garbage_collector.c gb_utils.c
 ```
 
-## Future Work
-- Extend error handling for memory operations.
+Ensure the necessary headers (`garbage_collector.h`, `libft.h`) are included.
+
+---
+
+## Why Choose This Over Manual Memory Management?
+
+Managing memory manually in C is **error-prone**. Forgetting even a **single `free()`** call can result in memory leaks, leading to bloated programs and undefined behavior.
+
+With this garbage collector:
+- **Initialize once, and forget about tracking pointers manually.**
+- **No tedious passing of memory management references.**
+- **Seamless drop-in replacement for `malloc()`.**
+- **Eliminate memory leaks with a single cleanup function.**
+
+---
+
+## Future Improvements
+
+- Enhance error handling mechanisms.
+- Optimize memory allocation efficiency.
+
+---
 
 ## License
-This project is open-source. You are free to use, modify, and distribute it under the relevant open-source license.
+
+This project is open-source and available for modification and distribution under the specified license.
+
